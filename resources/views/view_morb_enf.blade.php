@@ -2,7 +2,7 @@
 @section('content')
 <br>
 <div class="panel-body">
-<center><h3>Morbilidad General por Capitulos CIE-10 Red Cusco Norte 2015</h3></center>
+<center><h3>Morbilidad General por Enfermedades CIE-10 Red Cusco Norte 2015</h3></center>
 
 
 <div class="container-fluid">
@@ -47,14 +47,14 @@
           
           <table class="pretty cell-border compact" cellspacing="0" cellpadding="0" id="mitabla">
           <thead>
-            <th>Capitulo CIE-10</th>
+            <th>Enfermedad CIE-10</th>
             <th>Número de Casos</th>
             <th>Grafico de %</th>
             <th>% del Total</th>
             <tbody>
-          @foreach($morb_cap as $mrb)
+          @foreach($morb_enf as $mrb)
             <tr>
-              <td>{{ $mrb->capitulo }}</td>
+              <td>{{ $mrb->enfermedad }}</td>
               <td align='right'>{{ number_format($mrb->total) }}</td>
               <td>
                 <div class="progress progress-xs progress-striped active">
@@ -120,11 +120,11 @@
 $("#edad").change(function(event){
   var sx=$("input[name='Sexo']:checked").val();
   var gr=event.target.value;
-  $.getJSON("act_morb_cap/"+sx+"/"+event.target.value,function(data){
+  $.getJSON("act_morb_enf/"+sx+"/"+event.target.value,function(data){
     var linea="<tbody>";
     $.each(data, function(){
       linea+="<tr>";
-      linea+="<td>"+this.capitulo+"</td>";
+      linea+="<td>"+this.enfermedad+"</td>";
       linea+="<td align='right'>"+this.total+"</td>";
       
       linea+="<td>";
@@ -173,7 +173,7 @@ $("#edad").change(function(event){
     }
 
 
-    $('h3').text("Morbilidad por Capitulos CIE-10 Año: 2015 Sexo: "+sex+" - Grupo de Edad: "+grp);
+    $('h3').text("Morbilidad por Enfermedades CIE-10 Año: 2015 Sexo: "+sex+" - Grupo de Edad: "+grp);
 
     $('#mitabla').html(linea);
     $("#mitabla").dataTable().fnDestroy();

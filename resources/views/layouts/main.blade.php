@@ -9,6 +9,21 @@
   <link href="{{ asset('css/Tablas.css') }}" rel="stylesheet">
   <link href="{{ asset('css/AdminLTE.min.css') }}" rel="stylesheet">
   <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/export.css') }}" rel="stylesheet">
+
+  <style>
+    
+    footer{
+    background:#2A2A2C;
+   color:#8C8E8F;
+   padding:5px;
+   text-align: center
+    }
+
+
+  </style>
+
+
 
   
 </head>
@@ -35,10 +50,10 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Morbilidad General<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{{url('morb_cap')}}">Por Capitulos CIE-10</a></li>
-            <li><a href="{{url('mic_datos/2014')}}">Por Grupos CIE-10</a></li>
+            <li><a href="{{url('morb_gru')}}">Por Grupos CIE-10</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{{url('graf_prov_2014')}}">Por Categorias CIE-10</a></li>
-            <li><a href="{{url('graf_mic_2014')}}">Por Enfermedades CIE-10</a></li>
+            <li><a href="{{url('morb_cat')}}">Por Categorias CIE-10</a></li>
+            <li><a href="{{url('morb_enf')}}">Por Enfermedades CIE-10</a></li>
           </ul>
         </li>
 
@@ -46,34 +61,37 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Morbilidad por Micro Redes<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="{{url('prov_datos/2015')}}">Por Provincia/Distrito</a></li>
-            <li><a href="{{url('mic_datos/2015')}}">Por Micro Red/Establecimiento</a></li>
+            <li><a href="{{url('morb_cap_micro')}}">Por Capitulos CIE-10</a></li>
+            <li><a href="{{url('morb_gru_micro')}}">Por Grupos CIE-10</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{{url('graf_prov_2015')}}">Grafico por Provincia</a></li>
-            <li><a href="{{url('graf_mic_2015')}}">Grafico por Micro Red</a></li>
+            <li><a href="{{url('morb_cat_micro')}}">Por Categorias CIE-10</a></li>
+            <li><a href="{{url('morb_enf_micro')}}">Por Enfermedades CIE-10</a></li>
           </ul>
         </li>
 
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Morbilidad por Establecimiento<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="{{url('prov_datos/2016')}}">Por Provincia/Distrito</a></li>
-            <li><a href="{{url('mic_datos/2016')}}">Por Micro Red/Establecimiento</a></li>
+            <li><a href="{{url('morb_cap_estab')}}">Por Capitulos CIE-10</a></li>
+            <li><a href="{{url('morb_gru_estab')}}">Por Grupos CIE-10</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{{url('graf_prov_2016')}}">Grafico por Provincia</a></li>
-            <li><a href="{{url('graf_mic_2016')}}">Grafico por Micro Red</a></li>
+            <li><a href="{{url('morb_cat_estab')}}">Por Categorias CIE-10</a></li>
+            <li><a href="{{url('morb_enf_estab')}}">Por Enfermedades CIE-10</a></li>
           </ul>
         </li>
 
 
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Anemia 2017<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Graficos<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="{{url('prov_datos/2017')}}">Por Provincia/Distrito</a></li>
-            <li><a href="{{url('mic_datos/2017')}}">Por Micro Red/Establecimiento</a></li>
+            <li><a href="{{url('graf_cap_estab')}}">10 Primeras Causas por Capitulos CIE-10</a></li>
+            <li><a href="{{url('graf_gru_estab')}}">10 Primeras Causas por Grupos CIE-10</a></li>
+            <li><a href="{{url('graf_cat_estab')}}">10 Primeras Causas por Categorias CIE-10</a></li>
+            <li><a href="{{url('graf_enf_estab')}}">10 Primeras Causas por Enfermedades CIE-10</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{{url('prov_graf_prov')}}">Grafico por Provincia</a></li>
-            <li><a href="{{url('graf_mic')}}">Grafico por Micro Red</a></li>
+            <li><a href="{{url('graf_anl_estab')}}">Grafico Morbilidad Micro Red/EESS </a></li>
+
+
           </ul>
         </li>
         
@@ -90,9 +108,16 @@
   <script src="{{ asset('js/jquery-3.2.1.js') }}"></script>
   <script src="{{ asset('js/bootstrap.min.js') }}"></script>
   <script src="{{ asset('js/dataTables.min.js') }}"></script>
+  
   <script src="{{ asset('js/highcharts.js') }}"></script>
   <script src="{{ asset('js/highcharts-3d.js') }}"></script>
   <script src="{{ asset('js/exporting.js') }}"></script>
+
+
+  <script src="{{ asset('js/amcharts.js') }}"></script>
+  <script src="{{ asset('js/serial.js') }}"></script>
+  <script src="{{ asset('js/export.min.js') }}"></script>
+  <script src="{{ asset('js/light.js') }}"></script>
   @yield('script')
 </div>
 
@@ -100,11 +125,10 @@
 <div class="footer">
     <footer>
     <center>
-        <h6> &copy; Red de Servicios de Salud Cusco Norte 2016 Derechos Reservados </h6>
+        <h6> &copy; Red de Servicios de Salud Cusco Norte 2017 Derechos Reservados Ing. Abel Laurente </h6>
     </center>
     </footer>
-</div>
-    
+</div>    
 
 
 

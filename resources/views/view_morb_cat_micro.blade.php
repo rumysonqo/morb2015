@@ -2,7 +2,8 @@
 @section('content')
 <br>
 <div class="panel-body">
-<center><h3>Morbilidad General por Capitulos CIE-10 Red Cusco Norte 2015</h3></center>
+<center><h2>Morbilidad General por Categorias CIE-10 Red Cusco Norte 2015</h3></center>
+<center><h3>Por Micro Redes</h4></center>
 
 
 <div class="container-fluid">
@@ -35,6 +36,20 @@
         </div>
         </div>
       </div>
+
+      <div  class="col-xs-3">
+        <div style="width: 100%;" class="panel panel-primary">
+        <div class="panel-heading">
+            Micro Red
+        </div>
+        <div class="panel-body">
+            {{ Form::select('micro',$micro,null,['placeholder'=>'Selecciona...', 'class'=>'form-control input-md','id'=>'micro']) }}
+        </div>
+        </div>
+      </div>
+
+
+
   </div>
 
   </div>
@@ -47,14 +62,14 @@
           
           <table class="pretty cell-border compact" cellspacing="0" cellpadding="0" id="mitabla">
           <thead>
-            <th>Capitulo CIE-10</th>
+            <th>Categoria CIE-10</th>
             <th>Número de Casos</th>
             <th>Grafico de %</th>
             <th>% del Total</th>
             <tbody>
-          @foreach($morb_cap as $mrb)
+          @foreach($morb_cat as $mrb)
             <tr>
-              <td>{{ $mrb->capitulo }}</td>
+              <td>{{ $mrb->categoria }}</td>
               <td align='right'>{{ number_format($mrb->total) }}</td>
               <td>
                 <div class="progress progress-xs progress-striped active">
@@ -64,14 +79,7 @@
               <td align='center'><span class='badge bg-green'> {{ round($mrb->porcentaje,2)."%" }} </span></td>
             </tr>
             @endforeach
-          
-            
           </tbody>
-
-
-
-            
-
           </thead>
         </table>
         </div>
@@ -120,11 +128,29 @@
 $("#edad").change(function(event){
   var sx=$("input[name='Sexo']:checked").val();
   var gr=event.target.value;
-  $.getJSON("act_morb_cap/"+sx+"/"+event.target.value,function(data){
+  var mc=document.getElementById("micro");
+  var mcr=mc.options[mc.selectedIndex].value;
+  var nommic=mc.options[mc.selectedIndex].text;
+
+  var ed=document.getElementById("edad");
+  var edad=ed.options[ed.selectedIndex].text;
+
+
+
+  if(mcr < 1)
+  {
+    alert("no ha seleccionado micro red"); 
+    return; 
+  }
+  
+
+
+
+  $.getJSON("act_morb_cat_micro/"+sx+"/"+event.target.value+"/"+mcr,function(data){
     var linea="<tbody>";
     $.each(data, function(){
       linea+="<tr>";
-      linea+="<td>"+this.capitulo+"</td>";
+      linea+="<td>"+this.categoria+"</td>";
       linea+="<td align='right'>"+this.total+"</td>";
       
       linea+="<td>";
@@ -149,31 +175,9 @@ $("#edad").change(function(event){
       case '3':sex="Ambos";break;
     }
 
-    var grp="";
-    switch(gr)
-    {
-      case '1':grp="De 0 a 28 Dias";break;
-      case '2':grp="De 1 a 11 Meses";break;
-      case '3':grp="1 Año";break;
-      case '4':grp="De 2 a 4 Años";break;
-      case '5':grp="De 5 a 9 Años";break;
-      case '6':grp="De 10 a 11 Años";break;
-      case '7':grp="De 12 a 14 Años";break;
-      case '8':grp="De 15 a 17 Años";break;
-      case '9':grp="De 18 a 24 Años";break;
-      case '10':grp="De 25 a 29 Años";break;
-      case '11':grp="De 30 a 34 Años";break;
-      case '12':grp="De 35 a 39 Años";break;
-      case '13':grp="De 40 a 44 Años";break;
-      case '14':grp="De 45 a 49 Años";break;
-      case '15':grp="De 50 a 54 Años";break;
-      case '16':grp="De 55 a 59 Años";break;
-      case '17':grp="De 60 a Mas Años";break;
-      case '18':grp="Todos los Grupos";break;
-    }
 
-
-    $('h3').text("Morbilidad por Capitulos CIE-10 Año: 2015 Sexo: "+sex+" - Grupo de Edad: "+grp);
+    $('h2').text("Morbilidad 2015 por Categorias CIE-10");
+    $('h3').text("Micro Red : "+nommic+" - "+"Sexo: "+sex+" - Edad: "+edad);
 
     $('#mitabla').html(linea);
     $("#mitabla").dataTable().fnDestroy();
@@ -209,6 +213,102 @@ $("#edad").change(function(event){
 
 
 </script>
+
+
+
+
+<script>
+
+$("#micro").change(function(event){
+  var sx=$("input[name='Sexo']:checked").val();
+  var gr=event.target.value;
+  var mc=document.getElementById("micro");
+  var mcr=mc.options[mc.selectedIndex].value;
+  var nommic=mc.options[mc.selectedIndex].text;
+
+  var ed=document.getElementById("edad");
+  var edv=ed.options[ed.selectedIndex].value;
+  var edt=ed.options[ed.selectedIndex].text;
+
+
+
+  if(edv < 1)
+  {
+    alert("no ha seleccionado Grupo de Edad"); 
+    return; 
+  }
+  
+
+
+
+  $.getJSON("act_morb_cat_micro/"+sx+"/"+edv+"/"+mcr,function(data){
+    var linea="<tbody>";
+    $.each(data, function(){
+      linea+="<tr>";
+      linea+="<td>"+this.categoria+"</td>";
+      linea+="<td align='right'>"+this.total+"</td>";
+      
+      linea+="<td>";
+      linea+="<div class='progress progress-xs progress-striped active'>";
+      linea+="<div class='progress-bar progress-bar-danger' style="+'"'+ 'width:'+this.porcentaje +'%"'+">";
+      linea+="</div>";
+      linea+="</div>";
+      linea+="</td>";
+
+      linea+="<td align='center'>";
+      linea+="<span class='badge bg-green'>"+this.porcentaje+"%";
+      linea+="</span>";
+      linea+="</td>";
+      linea+="</tr>";
+    });
+    linea+="</tbody>"
+    var sex="";
+    switch(sx)
+    {
+      case '1':sex="Masculino";break;
+      case '2':sex="Femenino";break;
+      case '3':sex="Ambos";break;
+    }
+
+
+    $('h2').text("Morbilidad 2015 por Categorias CIE-10");
+    $('h3').text("Micro Red : "+nommic+" - "+"Sexo: "+sex+" - Edad: "+edt);
+
+    $('#mitabla').html(linea);
+    $("#mitabla").dataTable().fnDestroy();
+    $('#mitabla').DataTable({
+        "order": [[ 1, "desc" ]],
+
+        //"dom": 'T<"clear">lfrtip',
+        //"sDom": "T<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "pagingType": "simple_numbers",
+        //Actualizo las etiquetas de mi tabla para mostrarlas en español
+        "language": {
+        "lengthMenu": "Mostrar _MENU_ registros por página.",
+        "zeroRecords": "No se encontró registro.",
+        "info": "  _START_ de _END_ (_TOTAL_ registros totales).",
+        "infoEmpty": "0 de 0 de 0 registros",
+        "infoFiltered": "(Encontrado de _MAX_registros)",
+        "search": "Buscar: ",
+        "processing": "Procesando la información",
+        "paginate": {
+        "first": " |< ",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "last": " >| "
+        }
+        }
+        });
+    
+            
+  });
+});
+
+
+
+
+</script>
+
 
 
 
